@@ -65,7 +65,26 @@ func (data user) AddUser(id string) string {
 		"display_name":  data.DisplayName,
 		"user_type":     data.UserType,
 	})
-	/*_, _, err = client.Collection("users").Add(ctx, map[string]interface{}{
+	if err != nil {
+		log.Fatalf("Failed adding aturing: %v", err)
+	}
+	return "Create Success"
+}
+func (data user) UpdateUser(id string) string {
+	ctx := context.Background()
+	sa := option.WithCredentialsFile("./paydayconnect.json")
+	app, err := firebase.NewApp(ctx, nil, sa)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	client, err := app.Firestore(ctx)
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer client.Close()
+	_, err = client.Collection("users").Doc(id).Set(ctx, map[string]interface{}{
 		"first_name_en": data.FirstNameEn,
 		"last_name_en":  data.LastNameEn,
 		"first_name_th": data.FirstNameTh,
@@ -74,7 +93,7 @@ func (data user) AddUser(id string) string {
 		"title_th":      data.TitleTh,
 		"display_name":  data.DisplayName,
 		"user_type":     data.UserType,
-	})*/
+	})
 	if err != nil {
 		log.Fatalf("Failed adding aturing: %v", err)
 	}

@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"os"
 	"payday/payday"
 
@@ -34,22 +33,18 @@ func main() {
 		dataBody := dataBody(c)
 		t := payday.New(dataBody)
 		result := t.GetUser(id)
+		fmt.Println(len(result))
 
 		c.JSON(200, result)
 	})
 
 	r.POST("/user/:v", func(c *gin.Context) {
-		buf := make([]byte, 1024)
-		body, _ := c.Request.Body.Read(buf)
-		//reqBody := string(buf[0:body])
-		reqBody2 := buf[0:body]
-		//fmt.Println(reflect.TypeOf(reqBody))
-		var reqMap map[string]interface{}
-		json.Unmarshal(reqBody2, &reqMap)
-		fmt.Println(string(reqBody2))
-		fmt.Println(reqMap)
+		id := c.Param("id")
+		dataBody := dataBody(c)
+		t := payday.New(dataBody)
+		result := t.UpdateUser(id)
 
-		c.JSON(200, string(reqBody2))
+		c.JSON(200, result)
 	})
 
 	r.DELETE("/user/:v", func(c *gin.Context) {
@@ -68,45 +63,11 @@ func main() {
 
 	r.PUT("/user/", func(c *gin.Context) {
 		dataBody := dataBody(c)
-		// buf := make([]byte, 1024)
-
-		// rawBody, _ := c.Request.Body.Read(buf)
-		// jsonBody := buf[0:rawBody]
-		// fmt.Println(jsonBody)
-		// var mapBody map[string]string
-		// json.Unmarshal(jsonBody, &mapBody)
-		// fmt.Println(mapBody)
-
 		t := payday.New(dataBody)
 		fmt.Println(t.FirstNameTh)
 		t.AddUser(dataBody["id"])
 		fmt.Println("response.StatusCode")
-		//fmt.Println(result)
 		c.JSON(200, "Create User Complete.")
-	})
-
-	r.GET("/someDataFromReader", func(c *gin.Context) {
-		response, err := http.Get("https://raw.githubusercontent.com/gin-gonic/logo/master/color.png")
-		fmt.Println(response.StatusCode)
-		if err != nil || response.StatusCode != http.StatusOK {
-			fmt.Println(err)
-			c.Status(http.StatusServiceUnavailable)
-			return
-		}
-
-		reader := response.Body
-		defer reader.Close()
-		contentLength := response.ContentLength
-		contentType := response.Header.Get("Content-Type")
-
-		extraHeaders := map[string]string{
-			"Content-Disposition": `attachment; filename="gopher.png"`,
-		}
-
-		c.DataFromReader(http.StatusOK, contentLength, contentType, reader, extraHeaders)
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
 	})
 	port := os.Getenv("PORT")
 	r.Run(":" + port)
