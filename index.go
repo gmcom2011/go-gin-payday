@@ -4,12 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"payday/payday"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	port := os.Getenv("PORT")
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
 		fmt.Println("response.StatusCode")
@@ -55,7 +57,6 @@ func main() {
 
 		c.JSON(200, string(reqBody2))
 	})
-	
 
 	r.DELETE("/user/:v", func(c *gin.Context) {
 		buf := make([]byte, 1024)
@@ -122,5 +123,5 @@ func main() {
 			"message": "pong",
 		})
 	})
-	r.Run(":8011")
+	r.Run(":" + port)
 }
