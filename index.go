@@ -11,7 +11,6 @@ import (
 )
 
 func main() {
-	port := os.Getenv("PORT")
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
 		fmt.Println("response.StatusCode")
@@ -32,20 +31,12 @@ func main() {
 
 	r.GET("/user/:id", func(c *gin.Context) {
 		id := c.Param("id")
+		t := payday.New("", "", "", "", "", "", "", "")
+		result := t.GetUser(id)
+		fmt.Println(result)
 		fmt.Println(id)
-		/*buf := make([]byte, 1024)
-		body, _ := c.Request.Body.Read(buf)
-		//reqBody := string(buf[0:body])
-		reqBody2 := buf[0:body]
-		//fmt.Println(reflect.TypeOf(reqBody))
-		var reqMap map[string]interface{}
-		json.Unmarshal(reqBody2, &reqMap)
-		fmt.Println(string(reqBody2))
-		fmt.Println(reqMap)*/
 
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
+		c.JSON(200, result)
 	})
 
 	r.POST("/user/:v", func(c *gin.Context) {
@@ -127,5 +118,7 @@ func main() {
 			"message": "pong",
 		})
 	})
+	port := os.Getenv("PORT")
 	r.Run(":" + port)
+	// r.Run(":8000")
 }

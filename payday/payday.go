@@ -77,7 +77,7 @@ func (data user) AddUser() string {
 	}
 	return "Create Success"
 }
-func (data user) GetUser() string {
+func (data user) GetUser(id string) map[string]interface{} {
 	ctx := context.Background()
 	sa := option.WithCredentialsFile("./paydayconnect.json")
 	app, err := firebase.NewApp(ctx, nil, sa)
@@ -91,13 +91,12 @@ func (data user) GetUser() string {
 		log.Fatalln(err)
 	}
 	defer client.Close()
-	dsnap, err := client.Collection("cities").Doc("SF").Get(ctx)
+	dsnap, err := client.Collection("users").Doc(id).Get(ctx)
 	if err != nil {
 		log.Fatalf("Failed to iterate: %v", err)
 	}
 	user := dsnap.Data()
-	userOnce, _ := json.Marshal(user)
-	return string(userOnce)
+	return user
 }
 func (data user) ReadUser() string {
 	ctx := context.Background()
