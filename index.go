@@ -74,24 +74,13 @@ func main() {
 		var mapBody map[string]string
 		json.Unmarshal(jsonBody, &mapBody)
 		fmt.Println(mapBody)
-		firstNameEn := mapBody["firstNameEn"]
-		lastNameEn := mapBody["lastNameEn"]
-		firstNameTh := mapBody["firstNameTh"]
-		lastNameth := mapBody["lastNameth"]
-		titleEn := mapBody["titleEn"]
-		titleTh := mapBody["titleTh"]
-		displayName := mapBody["displayName"]
-		userType := mapBody["userType"]
-		id := mapBody["id"]
 
-		t := payday.New(firstNameEn, lastNameEn, firstNameTh, lastNameth, titleEn, titleTh, displayName, userType)
+		t := payday.New(mapBody["firstNameEn"], mapBody["lastNameEn"], mapBody["firstNameTh"], mapBody["lastNameth"], mapBody["titleEn"], mapBody["titleTh"], mapBody["displayName"], mapBody["userType"])
 		fmt.Println(t.FirstNameTh)
-		t.AddUser(id)
+		t.AddUser(mapBody["id"])
 		fmt.Println("response.StatusCode")
 		//fmt.Println(result)
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
+		c.JSON(200, "Create User Complete.")
 	})
 
 	r.GET("/someDataFromReader", func(c *gin.Context) {
@@ -119,5 +108,4 @@ func main() {
 	})
 	port := os.Getenv("PORT")
 	r.Run(":" + port)
-	// r.Run(":8000")
 }
