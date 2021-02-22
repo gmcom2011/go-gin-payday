@@ -28,23 +28,16 @@ type user struct {
 	UserType    string
 }
 
-func New(FirstNameEn string,
-	LastNameEn string,
-	FirstNameTh string,
-	LastNameTh string,
-	TitleEn string,
-	TitleTh string,
-	DisplayName string,
-	UserType string) user {
+func New(data map[string]string) user {
 	t := user{
-		FirstNameEn: FirstNameEn,
-		LastNameEn:  LastNameEn,
-		FirstNameTh: FirstNameTh,
-		LastNameTh:  LastNameTh,
-		TitleEn:     TitleEn,
-		TitleTh:     TitleTh,
-		DisplayName: DisplayName,
-		UserType:    UserType,
+		FirstNameEn: data["firstNameEn"],
+		LastNameEn:  data["lastNameEn"],
+		FirstNameTh: data["firstNameTh"],
+		LastNameTh:  data["lastNameTh"],
+		TitleEn:     data["titleEn"],
+		TitleTh:     data["titleTh"],
+		DisplayName: data["displayName"],
+		UserType:    data["userType"],
 	}
 	return t
 }

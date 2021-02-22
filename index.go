@@ -31,7 +31,8 @@ func main() {
 
 	r.GET("/user/:id", func(c *gin.Context) {
 		id := c.Param("id")
-		t := payday.New("", "", "", "", "", "", "", "")
+		dataBody := dataBody(c)
+		t := payday.New(dataBody)
 		result := t.GetUser(id)
 
 		c.JSON(200, result)
@@ -66,18 +67,19 @@ func main() {
 	})
 
 	r.PUT("/user/", func(c *gin.Context) {
-		buf := make([]byte, 1024)
+		dataBody := dataBody(c)
+		// buf := make([]byte, 1024)
 
-		rawBody, _ := c.Request.Body.Read(buf)
-		jsonBody := buf[0:rawBody]
-		fmt.Println(jsonBody)
-		var mapBody map[string]string
-		json.Unmarshal(jsonBody, &mapBody)
-		fmt.Println(mapBody)
+		// rawBody, _ := c.Request.Body.Read(buf)
+		// jsonBody := buf[0:rawBody]
+		// fmt.Println(jsonBody)
+		// var mapBody map[string]string
+		// json.Unmarshal(jsonBody, &mapBody)
+		// fmt.Println(mapBody)
 
-		t := payday.New(mapBody["firstNameEn"], mapBody["lastNameEn"], mapBody["firstNameTh"], mapBody["lastNameth"], mapBody["titleEn"], mapBody["titleTh"], mapBody["displayName"], mapBody["userType"])
+		t := payday.New(dataBody)
 		fmt.Println(t.FirstNameTh)
-		t.AddUser(mapBody["id"])
+		t.AddUser(dataBody["id"])
 		fmt.Println("response.StatusCode")
 		//fmt.Println(result)
 		c.JSON(200, "Create User Complete.")
@@ -108,4 +110,14 @@ func main() {
 	})
 	port := os.Getenv("PORT")
 	r.Run(":" + port)
+}
+
+func dataBody(c *gin.Context) map[string]string {
+	buf := make([]byte, 1024)
+	rawBody, _ := c.Request.Body.Read(buf)
+	jsonBody := buf[0:rawBody]
+	fmt.Println(jsonBody)
+	var mapBody map[string]string
+	json.Unmarshal(jsonBody, &mapBody)
+	return mapBody
 }
