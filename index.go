@@ -33,8 +33,6 @@ func main() {
 		id := c.Param("id")
 		t := payday.New("", "", "", "", "", "", "", "")
 		result := t.GetUser(id)
-		fmt.Println(result)
-		fmt.Println(id)
 
 		c.JSON(200, result)
 	})
@@ -67,7 +65,7 @@ func main() {
 		c.JSON(200, string(reqBody2))
 	})
 
-	r.PUT("/user", func(c *gin.Context) {
+	r.PUT("/user/", func(c *gin.Context) {
 		buf := make([]byte, 1024)
 
 		rawBody, _ := c.Request.Body.Read(buf)
@@ -84,10 +82,11 @@ func main() {
 		titleTh := mapBody["titleTh"]
 		displayName := mapBody["displayName"]
 		userType := mapBody["userType"]
+		id := mapBody["id"]
 
 		t := payday.New(firstNameEn, lastNameEn, firstNameTh, lastNameth, titleEn, titleTh, displayName, userType)
 		fmt.Println(t.FirstNameTh)
-		t.AddUser()
+		t.AddUser(id)
 		fmt.Println("response.StatusCode")
 		//fmt.Println(result)
 		c.JSON(200, gin.H{
