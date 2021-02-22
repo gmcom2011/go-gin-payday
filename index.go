@@ -33,7 +33,7 @@ func main() {
 		dataBody := dataBody(c)
 		t := payday.New(dataBody)
 		result := t.GetUser(id)
-		fmt.Println(len(result))
+		fmt.Println("length of result", len(result))
 
 		c.JSON(200, result)
 	})
