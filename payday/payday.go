@@ -7,6 +7,7 @@ import (
 	"log"
 
 	firebase "firebase.google.com/go"
+	"github.com/gin-gonic/gin"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
@@ -26,6 +27,16 @@ type user struct {
 	TitleTh     string
 	DisplayName string
 	UserType    string
+}
+
+func DataBody(c *gin.Context) map[string]string {
+	buf := make([]byte, 1024)
+	rawBody, _ := c.Request.Body.Read(buf)
+	jsonBody := buf[0:rawBody]
+	fmt.Println(jsonBody)
+	var mapBody map[string]string
+	json.Unmarshal(jsonBody, &mapBody)
+	return mapBody
 }
 
 func New(data map[string]string) user {

@@ -30,7 +30,7 @@ func main() {
 
 	r.GET("/user/:id", func(c *gin.Context) {
 		id := c.Param("id")
-		dataBody := dataBody(c)
+		dataBody := payday.DataBody(c)
 		t := payday.New(dataBody)
 		result := t.GetUser(id)
 		fmt.Println("length of result", len(result))
@@ -38,16 +38,16 @@ func main() {
 		c.JSON(200, result)
 	})
 
-	r.POST("/user/:v", func(c *gin.Context) {
+	r.POST("/user/:id", func(c *gin.Context) {
 		id := c.Param("id")
-		dataBody := dataBody(c)
+		dataBody := payday.DataBody(c)
 		t := payday.New(dataBody)
 		result := t.UpdateUser(id)
 
 		c.JSON(200, result)
 	})
 
-	r.DELETE("/user/:v", func(c *gin.Context) {
+	r.DELETE("/user/:id", func(c *gin.Context) {
 		buf := make([]byte, 1024)
 		body, _ := c.Request.Body.Read(buf)
 		//reqBody := string(buf[0:body])
@@ -62,7 +62,7 @@ func main() {
 	})
 
 	r.PUT("/user/", func(c *gin.Context) {
-		dataBody := dataBody(c)
+		dataBody := payday.DataBody(c)
 		t := payday.New(dataBody)
 		fmt.Println(t.FirstNameTh)
 		t.AddUser(dataBody["id"])
@@ -71,14 +71,4 @@ func main() {
 	})
 	port := os.Getenv("PORT")
 	r.Run(":" + port)
-}
-
-func dataBody(c *gin.Context) map[string]string {
-	buf := make([]byte, 1024)
-	rawBody, _ := c.Request.Body.Read(buf)
-	jsonBody := buf[0:rawBody]
-	fmt.Println(jsonBody)
-	var mapBody map[string]string
-	json.Unmarshal(jsonBody, &mapBody)
-	return mapBody
 }
