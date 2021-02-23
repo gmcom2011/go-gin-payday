@@ -53,7 +53,7 @@ func New(data map[string]string) user {
 	return t
 }
 
-func AddUser(id string, data map[string]interface{}) string {
+func (data user) AddUser(id string) string {
 	ctx := context.Background()
 	sa := option.WithCredentialsFile("./paydayconnect.json")
 	app, err := firebase.NewApp(ctx, nil, sa)
@@ -68,14 +68,14 @@ func AddUser(id string, data map[string]interface{}) string {
 	}
 	defer client.Close()
 	_, err = client.Collection("users").Doc(id).Set(ctx, map[string]interface{}{
-		"first_name_en": data{"FirstNameEn"],
-		"last_name_en":  data{"LastNameEn"],
-		"first_name_th": data{"FirstNameTh"],
-		"last_name_th":  data{"FirstNameTh"],
-		"title_en":      data{"TitleEn"],
-		"title_th":      data{"TitleTh"],
-		"display_name":  data{"DisplayName"],
-		"user_type":     data{"UserType"],
+		"first_name_en": data.FirstNameEn,
+		"last_name_en":  data.LastNameEn,
+		"first_name_th": data.FirstNameTh,
+		"last_name_th":  data.FirstNameTh,
+		"title_en":      data.TitleEn,
+		"title_th":      data.TitleTh,
+		"display_name":  data.DisplayName,
+		"user_type":     data.UserType,
 	})
 	if err != nil {
 		log.Fatalf("Failed adding aturing: %v", err)
