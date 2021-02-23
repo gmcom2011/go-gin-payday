@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 
+	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/api/iterator"
@@ -96,7 +97,7 @@ func (data user) UpdateUser(id string) string {
 		log.Fatalln(err)
 	}
 	defer client.Close()
-	_, err = client.Collection("users").Doc(id).Set(ctx, map[string]interface{}{
+	updateDta := map[string]interface{}{
 		"first_name_en": data.FirstNameEn,
 		"last_name_en":  data.LastNameEn,
 		"first_name_th": data.FirstNameTh,
@@ -105,9 +106,21 @@ func (data user) UpdateUser(id string) string {
 		"title_th":      data.TitleTh,
 		"display_name":  data.DisplayName,
 		"user_type":     data.UserType,
-	})
-	if err != nil {
-		log.Fatalf("Failed adding aturing: %v", err)
+	}
+	_, Updateerr := client.Collection("users").Doc(id).Set(ctx, updateDta, firestore.MergeAll)
+	// _, Updateerr = client.Collection("cities").Doc("DC").Update(ctx, updateDta)
+	// _, err = client.Collection("users").Doc(id).Update(ctx, []firestore.Update{
+	// 	"first_name_en": data.FirstNameEn,
+	// 	"last_name_en":  data.LastNameEn,
+	// 	"first_name_th": data.FirstNameTh,
+	// 	"last_name_th":  data.FirstNameTh,
+	// 	"title_en":      data.TitleEn,
+	// 	"title_th":      data.TitleTh,
+	// 	"display_name":  data.DisplayName,
+	// 	"user_type":     data.UserType,
+	// })
+	if Updateerr != nil {
+		log.Fatalf("Failed adding aturing: %v", Updateerr)
 	}
 	return "Update Success"
 }
