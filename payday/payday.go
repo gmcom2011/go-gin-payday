@@ -96,7 +96,7 @@ func (data user) UpdateUser(id string) string {
 		log.Fatalln(err)
 	}
 	defer client.Close()
-	_, err = client.Collection("users").Doc(id).Set(ctx, map[string]interface{}{
+	_, err = client.Collection("users").Doc(id).Set(ctx, map[string]string{
 		"first_name_en": data.FirstNameEn,
 		"last_name_en":  data.LastNameEn,
 		"first_name_th": data.FirstNameTh,
@@ -109,9 +109,9 @@ func (data user) UpdateUser(id string) string {
 	if err != nil {
 		log.Fatalf("Failed adding aturing: %v", err)
 	}
-	return "Create Success"
+	return "Update Success"
 }
-func (data user) GetUser(id string) map[string]interface{} {
+func (data user) GetUser(id string) map[string]string {
 	ctx := context.Background()
 	sa := option.WithCredentialsFile("./paydayconnect.json")
 	app, err := firebase.NewApp(ctx, nil, sa)
