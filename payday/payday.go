@@ -96,7 +96,7 @@ func (data user) UpdateUser(id string) string {
 		log.Fatalln(err)
 	}
 	defer client.Close()
-	_, err = client.Collection("users").Doc(id).Set(ctx, map[string]string{
+	_, err = client.Collection("users").Doc(id).Set(ctx, map[string]interface{}{
 		"first_name_en": data.FirstNameEn,
 		"last_name_en":  data.LastNameEn,
 		"first_name_th": data.FirstNameTh,
@@ -111,7 +111,7 @@ func (data user) UpdateUser(id string) string {
 	}
 	return "Update Success"
 }
-func (data user) GetUser(id string) map[string]string {
+func (data user) GetUser(id string) map[string]interface{} {
 	ctx := context.Background()
 	sa := option.WithCredentialsFile("./paydayconnect.json")
 	app, err := firebase.NewApp(ctx, nil, sa)
