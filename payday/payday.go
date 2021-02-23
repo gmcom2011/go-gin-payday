@@ -97,7 +97,7 @@ func (data user) UpdateUser(id string) string {
 		log.Fatalln(err)
 	}
 	defer client.Close()
-	updateDta := map[string]interface{}{
+	updateData := map[string]interface{}{
 		"first_name_en": data.FirstNameEn,
 		"last_name_en":  data.LastNameEn,
 		"first_name_th": data.FirstNameTh,
@@ -107,7 +107,8 @@ func (data user) UpdateUser(id string) string {
 		"display_name":  data.DisplayName,
 		"user_type":     data.UserType,
 	}
-	_, Updateerr := client.Collection("users").Doc(id).Set(ctx, updateDta, firestore.MergeAll)
+	fmt.Println("Update Data:", updateData)
+	_, Updateerr := client.Collection("users").Doc(id).Set(ctx, updateData, firestore.MergeAll)
 	// _, Updateerr = client.Collection("cities").Doc("DC").Update(ctx, updateDta)
 	// _, err = client.Collection("users").Doc(id).Update(ctx, []firestore.Update{
 	// 	"first_name_en": data.FirstNameEn,
