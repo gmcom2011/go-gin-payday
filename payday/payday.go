@@ -110,7 +110,7 @@ func (data user) UpdateUser(id string) string {
 	fmt.Println("Update Data:", updateData)
 	fmt.Println("Update Data ID:", id)
 
-	_, Updateerr := client.Collection("users").Doc("frank").Set(ctx, map[string]interface{}{
+	_, Updateerr := client.Collection("users").Doc(id).Set(ctx, map[string]interface{}{
 
 		"first_name_en": data.FirstNameEn,
 		"last_name_en":  data.LastNameEn,
