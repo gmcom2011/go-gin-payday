@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"payday/payday"
@@ -48,17 +47,10 @@ func main() {
 	})
 
 	r.DELETE("/user/:id", func(c *gin.Context) {
-		buf := make([]byte, 1024)
-		body, _ := c.Request.Body.Read(buf)
-		//reqBody := string(buf[0:body])
-		reqBody2 := buf[0:body]
-		//fmt.Println(reflect.TypeOf(reqBody))
-		var reqMap map[string]interface{}
-		json.Unmarshal(reqBody2, &reqMap)
-		fmt.Println(string(reqBody2))
-		fmt.Println(reqMap)
+		id := c.Param("id")
+		payday.DeleteUser(id)
 
-		c.JSON(200, string(reqBody2))
+		c.JSON(200, "Delete Success")
 	})
 
 	r.PUT("/user/", func(c *gin.Context) {

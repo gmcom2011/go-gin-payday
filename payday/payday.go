@@ -52,6 +52,7 @@ func New(data map[string]string) user {
 	}
 	return t
 }
+
 func (data user) AddUser(id string) string {
 	ctx := context.Background()
 	sa := option.WithCredentialsFile("./paydayconnect.json")
@@ -161,4 +162,24 @@ func (data user) ReadUser() string {
 	jsonString, _ := json.Marshal(user)
 	fmt.Println(string(jsonString))
 	return string(jsonString)
+}
+
+func DeleteUser(id string) {
+	ctx := context.Background()
+	sa := option.WithCredentialsFile("./paydayconnect.json")
+	app, err := firebase.NewApp(ctx, nil, sa)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	client, err := app.Firestore(ctx)
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+	_, deleteErr := client.Collection("user").Doc(id).Delete(ctx)
+	if deleteErr != nil {
+		// Handle any errors in an appropriate way, such as returning them.
+		log.Printf("An error has occurred: %s", err)
+	}
 }
