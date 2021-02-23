@@ -54,7 +54,7 @@ func main() {
 	})
 
 	r.PUT("/user/", func(c *gin.Context) {
-		dataBody := payday.DataBody(c )
+		dataBody := payday.DataBody(c)
 		t := payday.New(dataBody)
 		fmt.Println(t.FirstNameTh)
 		t.AddUser(dataBody["id"])
