@@ -177,7 +177,7 @@ func DeleteUser(id string) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	_, deleteErr := client.Collection("user").Doc(id).Delete(ctx)
+	_, deleteErr := client.Collection("users").Doc(id).Delete(ctx)
 	if deleteErr != nil {
 		// Handle any errors in an appropriate way, such as returning them.
 		log.Printf("An error has occurred: %s", err)
