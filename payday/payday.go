@@ -108,6 +108,7 @@ func (data user) UpdateUser(id string) string {
 		"user_type":     data.UserType,
 	}
 	fmt.Println("Update Data:", updateData)
+	fmt.Println("Update Data ID:", id)
 	_, Updateerr := client.Collection("users").Doc(id).Set(ctx, updateData, firestore.MergeAll)
 	// _, Updateerr = client.Collection("cities").Doc("DC").Update(ctx, updateDta)
 	// _, err = client.Collection("users").Doc(id).Update(ctx, []firestore.Update{
