@@ -41,16 +41,16 @@ func main() {
 		id := c.Param("id")
 		dataBody := payday.DataBody(c)
 		t := payday.New(dataBody)
-		result := t.UpdateUser(id)
+		t.UpdateUser(id)
 
-		c.JSON(200, result)
+		c.JSON(200, "Update Success.")
 	})
 
 	r.DELETE("/user/:id", func(c *gin.Context) {
 		id := c.Param("id")
 		payday.DeleteUser(id)
 
-		c.JSON(200, "Delete Success")
+		c.JSON(200, "Delete Success.")
 	})
 
 	r.PUT("/user/", func(c *gin.Context) {
@@ -58,7 +58,6 @@ func main() {
 		t := payday.New(dataBody)
 		fmt.Println(t.FirstNameTh)
 		t.AddUser(dataBody["id"])
-		fmt.Println("response.StatusCode")
 		c.JSON(200, "Create User Complete.")
 	})
 	port := os.Getenv("PORT")
