@@ -109,18 +109,18 @@ func (data user) UpdateUser(id string) string {
 	}
 	fmt.Println("Update Data:", updateData)
 	fmt.Println("Update Data ID:", id)
-	_, Updateerr := client.Collection("users").Doc(id).Set(ctx, updateData, firestore.MergeAll)
-	// _, Updateerr = client.Collection("cities").Doc("DC").Update(ctx, updateDta)
-	// _, err = client.Collection("users").Doc(id).Update(ctx, []firestore.Update{
-	// 	"first_name_en": data.FirstNameEn,
-	// 	"last_name_en":  data.LastNameEn,
-	// 	"first_name_th": data.FirstNameTh,
-	// 	"last_name_th":  data.FirstNameTh,
-	// 	"title_en":      data.TitleEn,
-	// 	"title_th":      data.TitleTh,
-	// 	"display_name":  data.DisplayName,
-	// 	"user_type":     data.UserType,
-	// })
+
+	_, Updateerr := client.Collection("users").Doc("frank").Set(ctx, map[string]interface{}{
+
+		"first_name_en": data.FirstNameEn,
+		"last_name_en":  data.LastNameEn,
+		"first_name_th": data.FirstNameTh,
+		"last_name_th":  data.FirstNameTh,
+		"title_en":      data.TitleEn,
+		"title_th":      data.TitleTh,
+		"display_name":  data.DisplayName,
+		"user_type":     data.UserType,
+	}, firestore.MergeAll)
 	if Updateerr != nil {
 		log.Fatalf("Failed adding aturing: %v", Updateerr)
 	}
