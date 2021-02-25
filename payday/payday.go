@@ -240,12 +240,11 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 }
 
 func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Start Function")
 	route.ctx = context.Background()
-	fmt.Println(route.ctx)
+	sa := option.WithCredentialsFile("./paydayconnect.json")
+	var err error
+	route.storage, err = cloud.NewClient(route.ctx, sa)
 	file, handler, err := r.FormFile("image")
-	fmt.Println(file)
-	fmt.Println(handler)
 	r.ParseMultipartForm(10 << 20)
 	if err != nil {
 		respondWithJSON(w, http.StatusBadRequest, err.Error())
@@ -254,39 +253,19 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request) {
 	defer file.Close()
 
 	imagePath := handler.Filename
-	fmt.Println(imagePath)
 
 	bucket := "payday-e074e.appspot.com"
 
-	Block{
-		Try: func() {
-			route.storage.Bucket(bucket).Object(imagePath).NewWriter(route.ctx)
-		},
-		Catch: func(e Exception) {
-			fmt.Printf("Caught %v\n", e)
-		},
-		Finally: func() {
-			fmt.Println("Finally...")
-		},
-	}.Do()
-	fmt.Println("final try")
 	wc := route.storage.Bucket(bucket).Object(imagePath).NewWriter(route.ctx)
-	fmt.Println(wc)
-	fmt.Println("after wc")
 	_, err = io.Copy(wc, file)
-	fmt.Println("after io")
 	if err != nil {
-		fmt.Println("ERR io")
 		respondWithJSON(w, http.StatusBadRequest, err.Error())
 		return
 
 	}
 	if err := wc.Close(); err != nil {
-		fmt.Println("ERR wc")
 		respondWithJSON(w, http.StatusBadRequest, err.Error())
 		return
 	}
-
-	fmt.Println("final")
 
 }
