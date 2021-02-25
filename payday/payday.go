@@ -214,6 +214,7 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 }
 
 func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Start Function")
 	route.ctx = context.Background()
 	file, handler, err := r.FormFile("image")
 	r.ParseMultipartForm(10 << 20)
