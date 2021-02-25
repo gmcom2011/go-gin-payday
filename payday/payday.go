@@ -9,6 +9,7 @@ import (
 	"net/http"
 
 	"cloud.google.com/go/firestore"
+	cloud "cloud.google.com/go/storage"
 	firebase "firebase.google.com/go"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/api/iterator"
@@ -33,7 +34,7 @@ type user struct {
 }
 type app struct {
 	ctx     context.Context
-	storage *firestore.Client
+	storage *cloud.Client
 }
 
 func DataBody(c *gin.Context) map[string]string {
