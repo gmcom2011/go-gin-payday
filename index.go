@@ -46,7 +46,7 @@ func main() {
 		c.JSON(200, "Update Success.")
 	})
 
-	r.POST("/upload/", func(c *gin.Context) {
+	r.POST("/upload/image", func(c *gin.Context) {
 		route := payday.App{}
 		route.UploadProfile(c.Writer, c.Request)
 
