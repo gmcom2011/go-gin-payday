@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"payday/payday"
 
 	"github.com/gin-gonic/gin"
@@ -67,7 +68,7 @@ func main() {
 		t.AddUser(dataBody["id"])
 		c.JSON(200, "Create User Complete.")
 	})
-	// port := os.Getenv("PORT")
-	port := "5000"
+	port := os.Getenv("PORT")
+	// port := "5000"
 	r.Run(":" + port)
 }
