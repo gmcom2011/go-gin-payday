@@ -50,7 +50,7 @@ func main() {
 		route := payday.App{}
 		route.UploadProfile(c.Writer, c.Request)
 
-		c.JSON(200, "Update Success.")
+		c.JSON(200, "Upload Success.")
 	})
 
 	r.DELETE("/user/:id", func(c *gin.Context) {
