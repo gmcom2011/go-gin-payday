@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"payday/payday"
 
 	"github.com/gin-gonic/gin"
@@ -47,6 +46,7 @@ func main() {
 	})
 
 	r.POST("/upload/image", func(c *gin.Context) {
+		fmt.Println("Hello")
 		route := payday.App{}
 		route.UploadProfile(c.Writer, c.Request)
 
@@ -67,6 +67,7 @@ func main() {
 		t.AddUser(dataBody["id"])
 		c.JSON(200, "Create User Complete.")
 	})
-	port := os.Getenv("PORT")
+	// port := os.Getenv("PORT")
+	port := "5000"
 	r.Run(":" + port)
 }
