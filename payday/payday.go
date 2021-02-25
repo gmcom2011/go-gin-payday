@@ -4,7 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
+	"net/http"
 
 	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go"
@@ -28,6 +30,10 @@ type user struct {
 	TitleTh     string
 	DisplayName string
 	UserType    string
+}
+type app struct {
+	ctx     context.Context
+	storage *firestore.Client
 }
 
 func DataBody(c *gin.Context) map[string]string {
@@ -197,4 +203,39 @@ func DeleteUser(id string) {
 		// Handle any errors in an appropriate way, such as returning them.
 		log.Printf("An error has occurred: %s", err)
 	}
+}
+
+func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
+	response, _ := json.Marshal(payload)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(code)
+	w.Write(response)
+}
+
+func (route *app) UploadProfile(w http.ResponseWriter, r *http.Request) {
+	route.ctx = context.Background()
+	file, handler, err := r.FormFile("image")
+	r.ParseMultipartForm(10 << 20)
+	if err != nil {
+		respondWithJSON(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	defer file.Close()
+
+	imagePath := handler.Filename
+
+	bucket := "payday-e074e.appspot.com"
+
+	wc := route.storage.Bucket(bucket).Object(imagePath).NewWriter(route.ctx)
+	_, err = io.Copy(wc, file)
+	if err != nil {
+		respondWithJSON(w, http.StatusBadRequest, err.Error())
+		return
+
+	}
+	if err := wc.Close(); err != nil {
+		respondWithJSON(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
 }
