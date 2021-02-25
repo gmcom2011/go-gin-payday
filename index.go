@@ -46,6 +46,13 @@ func main() {
 		c.JSON(200, "Update Success.")
 	})
 
+	r.POST("/upload/", func(c *gin.Context) {
+		route := payday.App{}
+		route.UploadProfile(c.Writer, c.Request)
+
+		c.JSON(200, "Update Success.")
+	})
+
 	r.DELETE("/user/:id", func(c *gin.Context) {
 		id := c.Param("id")
 		payday.DeleteUser(id)

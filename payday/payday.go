@@ -32,7 +32,7 @@ type user struct {
 	DisplayName string
 	UserType    string
 }
-type app struct {
+type App struct {
 	ctx     context.Context
 	storage *cloud.Client
 }
@@ -213,7 +213,7 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 	w.Write(response)
 }
 
-func (route *app) UploadProfile(w http.ResponseWriter, r *http.Request) {
+func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request) {
 	route.ctx = context.Background()
 	file, handler, err := r.FormFile("image")
 	r.ParseMultipartForm(10 << 20)
