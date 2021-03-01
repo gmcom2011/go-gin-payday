@@ -249,7 +249,8 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request) {
 
 	route.ctx = context.Background()
 	//sa := option.WithCredentialsFile("./paydayconnect.json")
-	sa := option.WithCredentialsJSON("AIzaSyCgU1C5tSy0VZMhI5F59toh99ac-_fv6WE")
+	json.Marshal(os.Getenv("PAYDAY_CONNECT"))
+	// sa := option.WithCredentialsJSON(json.Marshal(os.Getenv("PAYDAY_CONNECT")))
 	var err error
 	route.storage, err = cloud.NewClient(route.ctx, sa)
 	file, handler, err := r.FormFile("image")
