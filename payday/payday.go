@@ -248,7 +248,7 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(os.Getenv("PAYDAY_CONNECT"))
 
 	route.ctx = context.Background()
-	//sa := option.WithCredentialsFile("./paydayconnect.json")
+	sa := option.WithCredentialsFile("./paydayconnect.json")
 	json.Marshal(os.Getenv("PAYDAY_CONNECT"))
 	// sa := option.WithCredentialsJSON(json.Marshal(os.Getenv("PAYDAY_CONNECT")))
 	var err error
