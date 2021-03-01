@@ -241,7 +241,8 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 
 func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request) {
 	route.ctx = context.Background()
-	sa := option.WithCredentialsFile("./paydayconnect.json")
+	//sa := option.WithCredentialsFile("./paydayconnect.json")
+	sa := option.WithAPIKey("AIzaSyCgU1C5tSy0VZMhI5F59toh99ac-_fv6WE")
 	var err error
 	route.storage, err = cloud.NewClient(route.ctx, sa)
 	file, handler, err := r.FormFile("image")
