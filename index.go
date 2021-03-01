@@ -13,15 +13,15 @@ import (
 func main() {
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
-		// AllowOrigins:     []string{"https://foo.com"},
+		// AllowOrigins:     []string{"payday-e074e.firebaseapp.com"},
 		AllowMethods:     []string{"PUT", "PATCH", "DELETE", "GET", "POST"},
 		AllowHeaders:     []string{"Origin"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		AllowAllOrigins:  true,
-		AllowOriginFunc: func(origin string) bool {
-			return origin == "payday-e074e.firebaseapp.com"
-		},
+		// AllowOriginFunc: func(origin string) bool {
+		// 	return origin == "payday-e074e.firebaseapp.com"
+		// },
 		MaxAge: 12 * time.Hour,
 	}))
 	r.GET("/", func(c *gin.Context) {
