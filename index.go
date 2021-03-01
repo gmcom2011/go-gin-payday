@@ -13,15 +13,15 @@ import (
 func main() {
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"https://foo.com"},
-		AllowMethods:     []string{"PUT", "PATCH", "DELETE", "GET", "POST"},
-		AllowHeaders:     []string{"Origin"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		AllowAllOrigins:  true,
-		AllowOriginFunc: func(origin string) bool {
-			return origin == "https://github.com"
-		},
+		AllowOrigins:  []string{"https://foo.com"},
+		AllowMethods:  []string{"PUT", "PATCH", "DELETE", "GET", "POST"},
+		AllowHeaders:  []string{"Origin"},
+		ExposeHeaders: []string{"Content-Length"},
+		// AllowCredentials: true,
+		AllowAllOrigins: true,
+		// AllowOriginFunc: func(origin string) bool {
+		// 	return origin == "https://github.com"
+		// },
 		MaxAge: 12 * time.Hour,
 	}))
 	r.GET("/ping", func(c *gin.Context) {
