@@ -240,11 +240,7 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 
 func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request) {
 
-	// envErr := godotenv.Load()
-	// if envErr != nil {
-	// 	log.Fatal("Error loading .env file")
-	// }
-	// fmt.Println(os.Getenv("PAYDAY_CONNECT"))
+	fmt.Println(os.Getenv("PAYDAY_CONNECT"))
 
 	route.ctx = context.Background()
 	sa := option.WithCredentialsFile("./paydayconnect.json")
