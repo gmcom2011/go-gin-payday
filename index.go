@@ -51,7 +51,6 @@ func main() {
 		dataBody := payday.DataBody(c)
 		t := payday.New(dataBody)
 		result := t.GetUser(id)
-		fmt.Println(result)
 		fmt.Println("length of result", len(result))
 
 		c.JSON(200, result)
@@ -84,7 +83,6 @@ func main() {
 	r.PUT("/user/", func(c *gin.Context) {
 		dataBody := payday.DataBody(c)
 		t := payday.New(dataBody)
-		fmt.Println(t.FirstNameTh)
 		t.AddUser(dataBody["id"])
 		c.JSON(200, "Create User Complete.")
 	})
