@@ -4,12 +4,26 @@ import (
 	"fmt"
 	"os"
 	"payday/payday"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	r := gin.Default()
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"https://foo.com"},
+		AllowMethods:     []string{"PUT", "PATCH", "DELETE"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		AllowAllOrigins:  true,
+		AllowOriginFunc: func(origin string) bool {
+			return origin == "https://github.com"
+		},
+		MaxAge: 12 * time.Hour,
+	}))
 	r.GET("/ping", func(c *gin.Context) {
 		fmt.Println("response.StatusCode")
 		c.JSON(200, gin.H{
