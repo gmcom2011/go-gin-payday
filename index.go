@@ -24,6 +24,11 @@ func main() {
 		// },
 		MaxAge: 12 * time.Hour,
 	}))
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "Welcome",
+		})
+	})
 	r.GET("/ping", func(c *gin.Context) {
 		fmt.Println("response.StatusCode")
 		c.JSON(200, gin.H{
@@ -46,6 +51,7 @@ func main() {
 		dataBody := payday.DataBody(c)
 		t := payday.New(dataBody)
 		result := t.GetUser(id)
+		fmt.Println(result)
 		fmt.Println("length of result", len(result))
 
 		c.JSON(200, result)
