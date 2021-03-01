@@ -7,19 +7,19 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 
 	"cloud.google.com/go/firestore"
 	cloud "cloud.google.com/go/storage"
 	firebase "firebase.google.com/go"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
 
 // Use the application default credentials
 func main() {
-	// Read From DB
-	// Read From DB
 }
 
 type user struct {
@@ -240,9 +240,16 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 }
 
 func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request) {
+
+	envErr := godotenv.Load()
+	if envErr != nil {
+		log.Fatal("Error loading .env file")
+	}
+	fmt.Println(os.Getenv("PAYDAY_CONNECT"))
+
 	route.ctx = context.Background()
 	//sa := option.WithCredentialsFile("./paydayconnect.json")
-	sa := option.WithAPIKey("AIzaSyCgU1C5tSy0VZMhI5F59toh99ac-_fv6WE")
+	sa := option.WithCredentialsJSON("AIzaSyCgU1C5tSy0VZMhI5F59toh99ac-_fv6WE")
 	var err error
 	route.storage, err = cloud.NewClient(route.ctx, sa)
 	file, handler, err := r.FormFile("image")
