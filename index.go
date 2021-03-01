@@ -19,9 +19,9 @@ func main() {
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		AllowAllOrigins:  true,
-		// AllowOriginFunc: func(origin string) bool {
-		// 	return origin == "https://github.com"
-		// },
+		AllowOriginFunc: func(origin string) bool {
+			return origin == "payday-e074e.firebaseapp.com"
+		},
 		MaxAge: 12 * time.Hour,
 	}))
 	r.GET("/", func(c *gin.Context) {
