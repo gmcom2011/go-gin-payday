@@ -13,7 +13,6 @@ import (
 	cloud "cloud.google.com/go/storage"
 	firebase "firebase.google.com/go"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
@@ -241,11 +240,11 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 
 func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request) {
 
-	envErr := godotenv.Load()
-	if envErr != nil {
-		log.Fatal("Error loading .env file")
-	}
-	fmt.Println(os.Getenv("PAYDAY_CONNECT"))
+	// envErr := godotenv.Load()
+	// if envErr != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
+	// fmt.Println(os.Getenv("PAYDAY_CONNECT"))
 
 	route.ctx = context.Background()
 	sa := option.WithCredentialsFile("./paydayconnect.json")
