@@ -13,6 +13,7 @@ import (
 	cloud "cloud.google.com/go/storage"
 	firebase "firebase.google.com/go"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
@@ -160,6 +161,9 @@ func (data user) UpdateUser(id string) string {
 }
 func (data user) GetUser(id string) map[string]interface{} {
 	ctx := context.Background()
+	err := godotenv.Load(".env")
+	pack := os.Getenv("PAYDAY_CONNECT")
+	fmt.Println(pack)
 	sa := option.WithCredentialsFile("./paydayconnect.json")
 	app, err := firebase.NewApp(ctx, nil, sa)
 	if err != nil {
