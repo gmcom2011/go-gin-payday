@@ -13,7 +13,6 @@ import (
 	cloud "cloud.google.com/go/storage"
 	firebase "firebase.google.com/go"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
@@ -161,16 +160,7 @@ func (data user) UpdateUser(id string) string {
 }
 func (data user) GetUser(id string) map[string]interface{} {
 	ctx := context.Background()
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal(err)
-	}
-	pack := os.Getenv("PAYDAY_CONNECT")
-	fmt.Println("json:", pack)
-	connect := []byte("pack")
-	fmt.Println("connect:", connect)
 	sa := option.WithCredentialsFile("./paydayconnect.json")
-	//sa := option.WithCredentialsJSON(connect)
 	app, err := firebase.NewApp(ctx, nil, sa)
 	if err != nil {
 		log.Fatalln(err)
@@ -267,7 +257,7 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request) {
 
 	imagePath := handler.Filename
 
-	bucket := "payday-e074e.appspot.com"
+	bucket := "payday-e074e.appspot.com/profile"
 
 	wc := route.storage.Bucket(bucket).Object(imagePath).NewWriter(route.ctx)
 	_, err = io.Copy(wc, file)
