@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"cloud.google.com/go/firestore"
 	cloud "cloud.google.com/go/storage"
@@ -251,7 +252,8 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer file.Close()
-
+	fileEx := strings.Split(handler.Filename, ".")
+	fmt.Println(fileEx)
 	imagePath := handler.Filename
 
 	bucket := "payday-e074e.appspot.com"
