@@ -164,7 +164,9 @@ func (data user) GetUser(id string) map[string]interface{} {
 	err := godotenv.Load(".env")
 	pack := os.Getenv("PAYDAY_CONNECT")
 	fmt.Println(pack)
-	sa := option.WithCredentialsFile("./paydayconnect.json")
+	connect := []byte("pack")
+	// sa := option.WithCredentialsFile("./paydayconnect.json")
+	sa := option.WithCredentialsJSON(connect)
 	app, err := firebase.NewApp(ctx, nil, sa)
 	if err != nil {
 		log.Fatalln(err)
