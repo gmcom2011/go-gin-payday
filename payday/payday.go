@@ -251,8 +251,8 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request, id) {
 		return
 	}
 	defer file.Close()
-	fileEx := strings.Split(handler.Filename, ".")
-	fmt.Println(fileEx)
+	// fileEx := strings.Split(handler.Filename, ".")
+	// fmt.Println(fileEx)
 	// fileName := id+"."+fileEx[1]
 	// fmt.Println(fileName)
 	imagePath := handler.Filename
