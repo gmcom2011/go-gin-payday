@@ -237,7 +237,7 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 	w.Write(response)
 }
 
-func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request) {
+func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request, id) {
 
 	route.ctx = context.Background()
 	sa := option.WithCredentialsFile("./paydayconnect.json")
@@ -251,7 +251,10 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer file.Close()
-
+	fileEx := strings.Split(handler.Filename, ".")
+	fmt.Println(fileEx)
+	fileName := id+"."+fileEx[1]
+	fmt.Println(fileName)
 	imagePath := handler.Filename
 
 	bucket := "payday-e074e.appspot.com"
