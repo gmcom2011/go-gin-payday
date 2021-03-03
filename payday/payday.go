@@ -161,7 +161,7 @@ func (data user) UpdateUser(id string) string {
 }
 func (data user) GetUser(id string) map[string]interface{} {
 	ctx := context.Background()
-	err := godotenv.Load("../.env")
+	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal(err)
 	}
