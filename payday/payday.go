@@ -251,10 +251,6 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request, id) {
 		return
 	}
 	defer file.Close()
-	fileEx := strings.Split(handler.Filename, ".")
-	fmt.Println(fileEx)
-	// fileName := id+"."+fileEx[1]
-	// fmt.Println(fileName)
 	imagePath := handler.Filename
 
 	bucket := "payday-e074e.appspot.com"
