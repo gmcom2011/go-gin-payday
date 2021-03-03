@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"cloud.google.com/go/firestore"
 	cloud "cloud.google.com/go/storage"
@@ -237,7 +238,7 @@ func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 	w.Write(response)
 }
 
-func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request, id) {
+func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request) {
 
 	route.ctx = context.Background()
 	sa := option.WithCredentialsFile("./paydayconnect.json")
@@ -251,6 +252,10 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request, id) {
 		return
 	}
 	defer file.Close()
+	fileEx := strings.Split(handler.Filename, ".")
+	fmt.Println(fileEx)
+	// fileName := id+"."+fileEx[1]
+	// fmt.Println(fileName)
 	imagePath := handler.Filename
 
 	bucket := "payday-e074e.appspot.com"
