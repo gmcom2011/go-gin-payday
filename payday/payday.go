@@ -255,7 +255,7 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request) {
 
 	imagePath := handler.Filename
 
-	bucket := "payday-e074e.appspot.com"
+	bucket := "payday-e074e.appspot.com/profile"
 
 	wc := route.storage.Bucket(bucket).Object(imagePath).NewWriter(route.ctx)
 	_, err = io.Copy(wc, file)
