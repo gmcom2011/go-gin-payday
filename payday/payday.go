@@ -132,16 +132,18 @@ func (data user) UpdateUser(id string) string {
 		log.Fatalln(err)
 	}
 	defer client.Close()
-	updateData := map[string]interface{}{
-		"first_name_en": data.FirstNameEn,
-		"last_name_en":  data.LastNameEn,
-		"first_name_th": data.FirstNameTh,
-		"last_name_th":  data.FirstNameTh,
-		"title_en":      data.TitleEn,
-		"title_th":      data.TitleTh,
-		"display_name":  data.DisplayName,
-		"user_type":     data.UserType,
-	}
+	// updateData := map[string]interface{}{
+	// 	"first_name_en": data.FirstNameEn,
+	// 	"last_name_en":  data.LastNameEn,
+	// 	"first_name_th": data.FirstNameTh,
+	// 	"last_name_th":  data.FirstNameTh,
+	// 	"title_en":      data.TitleEn,
+	// 	"title_th":      data.TitleTh,
+	// 	"display_name":  data.DisplayName,
+	// 	"user_type":     data.UserType,
+	// }
+	// fmt.Println("Update Data:", updateData)
+	// fmt.Println("Update Data ID:", id)
 
 	_, Updateerr := client.Collection("users").Doc(id).Set(ctx, map[string]interface{}{
 
@@ -259,23 +261,17 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request, id strin
 	wc := route.storage.Bucket(bucket).Object("profile/" + imagePath).NewWriter(route.ctx)
 	_, err = io.Copy(wc, file)
 
-	ctx := context.Background()
-	app, err := firebase.NewApp(ctx, nil, sa)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	client, err := app.Firestore(ctx)
-
-	if err != nil {
-		log.Fatalln(err)
-	}
-	defer client.Close()
-	_, Updateerr := client.Collection("users").Doc(id).Set(ctx, map[string]interface{}{
-		"fileName": imagePath,
+	app, err := firebase.NewApp(route.ctx, nil, sa)
+	client, err := app.Firestore(route.ctx)
+	_, Updateerr := client.Collection("users").Doc(id).Set(route.ctx, map[string]interface{}{
+		"first_name_en": imagePath,
 	}, firestore.MergeAll)
+	defer client.Close()
+
 	if Updateerr != nil {
-		log.Fatalf("Failed adding aturing: %v", Updateerr)
+		fmt.Println(Updateerr)
+		return
+
 	}
 	if err != nil {
 		respondWithJSON(w, http.StatusBadRequest, err.Error())
@@ -288,14 +284,14 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request, id strin
 	}
 
 }
-func GetImageUrl(file string) string {
+func GetImageUrl(id string) string {
 	pkey, err := ioutil.ReadFile("my-private-key.pem")
 	if err != nil {
 		// TODO: handle error.
 		fmt.Println(err)
 	}
 	bucket := "payday-e074e.appspot.com"
-	fileName := "profile/" + file
+	fileName := "profile/LA.png"
 	url, err := storage.SignedURL(bucket, fileName, &storage.SignedURLOptions{
 		GoogleAccessID: "firebase-adminsdk-tq5j4@payday-e074e.iam.gserviceaccount.com",
 		PrivateKey:     pkey,
