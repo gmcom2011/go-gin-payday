@@ -256,7 +256,7 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request) {
 
 	bucket := "payday-e074e.appspot.com"
 
-	wc := route.storage.Bucket(bucket).Object("/profile/" + imagePath).NewWriter(route.ctx)
+	wc := route.storage.Bucket(bucket).Object("profile/" + imagePath).NewWriter(route.ctx)
 	_, err = io.Copy(wc, file)
 	if err != nil {
 		respondWithJSON(w, http.StatusBadRequest, err.Error())
