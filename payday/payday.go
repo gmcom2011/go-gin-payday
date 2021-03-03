@@ -214,7 +214,6 @@ func (data user) ReadUser() string {
 	}
 
 	jsonString, _ := json.Marshal(user)
-	fmt.Println(string(jsonString))
 	return string(jsonString)
 }
 
