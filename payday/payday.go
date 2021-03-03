@@ -5,12 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"strings"
+	"time"
 
 	"cloud.google.com/go/firestore"
+	"cloud.google.com/go/storage"
 	cloud "cloud.google.com/go/storage"
 	firebase "firebase.google.com/go"
 	"github.com/gin-gonic/gin"
@@ -140,8 +142,6 @@ func (data user) UpdateUser(id string) string {
 		"display_name":  data.DisplayName,
 		"user_type":     data.UserType,
 	}
-	fmt.Println("Update Data:", updateData)
-	fmt.Println("Update Data ID:", id)
 
 	_, Updateerr := client.Collection("users").Doc(id).Set(ctx, map[string]interface{}{
 
@@ -242,7 +242,6 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request, id strin
 
 	route.ctx = context.Background()
 	sa := option.WithCredentialsFile("./paydayconnect.json")
-	json.Marshal(os.Getenv("PAYDAY_CONNECT"))
 	var err error
 	route.storage, err = cloud.NewClient(route.ctx, sa)
 	file, handler, err := r.FormFile("image")
@@ -259,6 +258,25 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request, id strin
 
 	wc := route.storage.Bucket(bucket).Object("profile/" + imagePath).NewWriter(route.ctx)
 	_, err = io.Copy(wc, file)
+
+	ctx := context.Background()
+	app, err := firebase.NewApp(ctx, nil, sa)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	client, err := app.Firestore(ctx)
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer client.Close()
+	_, Updateerr := client.Collection("users").Doc(id).Set(ctx, map[string]interface{}{
+		"fileName": imagePath,
+	}, firestore.MergeAll)
+	if Updateerr != nil {
+		log.Fatalf("Failed adding aturing: %v", Updateerr)
+	}
 	if err != nil {
 		respondWithJSON(w, http.StatusBadRequest, err.Error())
 		return
@@ -269,4 +287,24 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request, id strin
 		return
 	}
 
+}
+func GetImageUrl(file string) string {
+	pkey, err := ioutil.ReadFile("my-private-key.pem")
+	if err != nil {
+		// TODO: handle error.
+		fmt.Println(err)
+	}
+	bucket := "payday-e074e.appspot.com"
+	fileName := "profile/" + file
+	url, err := storage.SignedURL(bucket, fileName, &storage.SignedURLOptions{
+		GoogleAccessID: "firebase-adminsdk-tq5j4@payday-e074e.iam.gserviceaccount.com",
+		PrivateKey:     pkey,
+		Method:         "GET",
+		Expires:        time.Now().Add(30 * time.Minute),
+	})
+	if err != nil {
+		// TODO: handle error.
+		fmt.Println(err)
+	}
+	return url
 }
