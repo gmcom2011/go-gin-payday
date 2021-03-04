@@ -87,11 +87,10 @@ func main() {
 		t.AddUser(dataBody["id"])
 		c.JSON(200, "Create User Complete.")
 	})
-	
 
-	r.GET("/geturl/:id", func(c *gin.Context) {
-		id := c.Param("id")
-		result := payday.GetImageUrl(id)
+	r.GET("/geturl/:img", func(c *gin.Context) {
+		img := c.Param("img")
+		result := payday.GetImageUrl(img)
 		//fmt.Println("length of result", len(result))
 
 		c.JSON(200, result)

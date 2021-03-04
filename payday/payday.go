@@ -284,14 +284,14 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request, id strin
 	}
 
 }
-func GetImageUrl(id string) string {
+func GetImageUrl(img string) string {
 	pkey, err := ioutil.ReadFile("my-private-key.pem")
 	if err != nil {
 		// TODO: handle error.
 		fmt.Println(err)
 	}
 	bucket := "payday-e074e.appspot.com"
-	fileName := "profile/LA.png"
+	fileName := "profile/" + img
 	url, err := storage.SignedURL(bucket, fileName, &storage.SignedURLOptions{
 		GoogleAccessID: "firebase-adminsdk-tq5j4@payday-e074e.iam.gserviceaccount.com",
 		PrivateKey:     pkey,
