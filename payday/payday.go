@@ -305,6 +305,7 @@ func GetImageUrl(img string) string {
 		// TODO: handle error.
 		fmt.Println(err)
 	}
+	fmt.Println(url)
 	return url
 }
 
