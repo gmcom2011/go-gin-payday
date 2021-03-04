@@ -285,6 +285,7 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request, id strin
 
 }
 func GetImageUrl(img string) string {
+	fmt.Println(img)
 	pkey, err := ioutil.ReadFile("my-private-key.pem")
 	if err != nil {
 		// TODO: handle error.
