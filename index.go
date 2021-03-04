@@ -91,7 +91,7 @@ func main() {
 
 	r.GET("/geturl/:id", func(c *gin.Context) {
 		id := c.Param("id")
-		result := GetImageUrl(id)
+		result := payday.GetImageUrl(id)
 		//fmt.Println("length of result", len(result))
 
 		c.JSON(200, result)
