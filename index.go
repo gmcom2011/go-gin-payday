@@ -87,6 +87,15 @@ func main() {
 		t.AddUser(dataBody["id"])
 		c.JSON(200, "Create User Complete.")
 	})
+	
+
+	r.GET("/geturl/:id", func(c *gin.Context) {
+		id := c.Param("id")
+		result := GetImageUrl(id)
+		//fmt.Println("length of result", len(result))
+
+		c.JSON(200, result)
+	})
 	port := os.Getenv("PORT")
 	// port := "5000"
 	r.Run(":" + port)
