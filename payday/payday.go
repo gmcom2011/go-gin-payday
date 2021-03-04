@@ -2,6 +2,7 @@ package payday
 
 import (
 	"context"
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -284,6 +285,7 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request, id strin
 	}
 
 }
+
 func GetImageUrl(img string) string {
 	fmt.Println(img)
 	pkey, err := ioutil.ReadFile("../my-private-key.pem")
@@ -304,4 +306,18 @@ func GetImageUrl(img string) string {
 		fmt.Println(err)
 	}
 	return url
+}
+
+func GenerateAttendanceCode(company string) string {
+	t := time.Now()
+	rounded := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
+	// fmt.Println(t)
+	day := fmt.Sprintf("%02d-%02d-%02d", rounded.Year(), rounded.Month(), rounded.Day())
+	// fmt.Println(day)
+	concatenated := fmt.Sprintf("%s%s", company, day)
+	data := []byte(concatenated)
+	encrypt := sha256.Sum256(data)
+	result := fmt.Sprintf("%x", encrypt)
+	return result
+
 }
