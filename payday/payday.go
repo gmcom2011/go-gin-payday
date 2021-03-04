@@ -299,6 +299,7 @@ func GetImageUrl(img string) string {
 		Method:         "GET",
 		Expires:        time.Now().Add(30 * time.Minute),
 	})
+	fmt.Println(url)
 	if err != nil {
 		// TODO: handle error.
 		fmt.Println(err)
