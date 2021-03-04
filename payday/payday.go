@@ -264,7 +264,7 @@ func (route *App) UploadProfile(w http.ResponseWriter, r *http.Request, id strin
 	app, err := firebase.NewApp(route.ctx, nil, sa)
 	client, err := app.Firestore(route.ctx)
 	_, Updateerr := client.Collection("users").Doc(id).Set(route.ctx, map[string]interface{}{
-		"first_name_en": imagePath,
+		"profile_image": imagePath,
 	}, firestore.MergeAll)
 	defer client.Close()
 
