@@ -95,6 +95,13 @@ func main() {
 
 		c.JSON(200, result)
 	})
+	r.GET("/geturl/:company", func(c *gin.Context) {
+		company := c.Param("company")
+		result := payday.GenerateAttendanceCode(company)
+		//fmt.Println("length of result", len(result))
+
+		c.JSON(200, result)
+	})
 	port := os.Getenv("PORT")
 	// port := "5000"
 	r.Run(":" + port)
