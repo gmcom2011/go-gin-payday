@@ -95,7 +95,7 @@ func main() {
 
 		c.JSON(200, result)
 	})
-	r.GET("/geturl/:company", func(c *gin.Context) {
+	r.GET("/generatecheckincode/:company", func(c *gin.Context) {
 		company := c.Param("company")
 		result := payday.GenerateAttendanceCode(company)
 		//fmt.Println("length of result", len(result))
